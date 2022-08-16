@@ -14,14 +14,17 @@ import java.util.stream.Collectors;
 
 public class HelloApplication extends Application {
 
-    int WIDTH = 512;
-    int HEIGHT = 512;
+    //int WIDTH = 512;
+    //int HEIGHT = 512;
 
     int tileWidth = 64;
     int tileHeight = 64;
 
     //public final int res = (HEIGHT / tileHeight);
-    public final int res = 8;
+    public final int res = 20;
+
+    int WIDTH = (tileWidth * res);
+    int HEIGHT = (tileHeight * res);
 
     Group group = new Group();
     Scene scene = new Scene(group,WIDTH,HEIGHT);
