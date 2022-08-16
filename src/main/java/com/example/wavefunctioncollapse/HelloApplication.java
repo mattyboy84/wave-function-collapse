@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -21,7 +22,7 @@ public class HelloApplication extends Application {
     int tileHeight = 64;
 
     //public final int res = (HEIGHT / tileHeight);
-    public final int res = 20;
+    public final int res = 4;
 
     int WIDTH = (tileWidth * res);
     int HEIGHT = (tileHeight * res);
@@ -39,6 +40,8 @@ public class HelloApplication extends Application {
     ArrayList<cell> nextGrid = new ArrayList<>();
     ArrayList<cell> copyGrid = new ArrayList<>();
     ArrayList<cell> optionsGrid = new ArrayList<>();
+
+    ArrayList<Tile> tiles = new ArrayList<>();
 
     Random random = new Random();
 
@@ -78,41 +81,57 @@ public class HelloApplication extends Application {
                 new Integer[]{DOWN, RIGHT, UP}
         });
         */
-        rules.put(0, new Integer[][]{
-                new Integer[]{BLANK, UP},
-                new Integer[]{BLANK, RIGHT},
-                new Integer[]{BLANK, DOWN},
-                new Integer[]{BLANK, LEFT}
-        });
-        rules.put(1, new Integer[][]{
-                new Integer[]{RIGHT, DOWN, LEFT},
-                new Integer[]{UP, DOWN, LEFT},
-                new Integer[]{BLANK, DOWN},
-                new Integer[]{UP, RIGHT, DOWN}
-        });
-        rules.put(2, new Integer[][]{
-                new Integer[]{RIGHT, DOWN, LEFT},
-                new Integer[]{UP, DOWN, LEFT},
-                new Integer[]{RIGHT, UP, LEFT},
-                new Integer[]{BLANK, LEFT}
-        });
-        rules.put(3, new Integer[][]{
-                new Integer[]{BLANK, UP},
-                new Integer[]{UP, LEFT, DOWN},
-                new Integer[]{UP, RIGHT, LEFT},
-                new Integer[]{UP, RIGHT, DOWN}
-        });
-        rules.put(4, new Integer[][]{
-                new Integer[]{RIGHT, DOWN, LEFT},
-                new Integer[]{BLANK, RIGHT},
-                new Integer[]{UP, RIGHT, LEFT},
-                new Integer[]{DOWN, RIGHT, UP}
-        });
+//        rules.put(0, new Integer[][]{
+//                new Integer[]{BLANK, UP},
+//                new Integer[]{BLANK, RIGHT},
+//                new Integer[]{BLANK, DOWN},
+//                new Integer[]{BLANK, LEFT}
+//        });
+//        rules.put(1, new Integer[][]{
+//                new Integer[]{RIGHT, DOWN, LEFT},
+//                new Integer[]{UP, DOWN, LEFT},
+//                new Integer[]{BLANK, DOWN},
+//                new Integer[]{UP, RIGHT, DOWN}
+//        });
+//        rules.put(2, new Integer[][]{
+//                new Integer[]{RIGHT, DOWN, LEFT},
+//                new Integer[]{UP, DOWN, LEFT},
+//                new Integer[]{RIGHT, UP, LEFT},
+//                new Integer[]{BLANK, LEFT}
+//        });
+//        rules.put(3, new Integer[][]{
+//                new Integer[]{BLANK, UP},
+//                new Integer[]{UP, LEFT, DOWN},
+//                new Integer[]{UP, RIGHT, LEFT},
+//                new Integer[]{UP, RIGHT, DOWN}
+//        });
+//        rules.put(4, new Integer[][]{
+//                new Integer[]{RIGHT, DOWN, LEFT},
+//                new Integer[]{BLANK, RIGHT},
+//                new Integer[]{UP, RIGHT, LEFT},
+//                new Integer[]{DOWN, RIGHT, UP}
+//        });
+        //
+        ImageView[] tileImages = {
+                new ImageView("file:tiles/blank.png"),
+                new ImageView("file:tiles/up.png"),
+        };
+        tiles.add(new Tile(tileImages[0],new Integer[] {0, 0, 0, 0}, 0));
+        tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 0));
+        tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 1));
+        tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 2));
+        tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 3));
+        //
+        for (int i = 0; i < tiles.size(); i++) {
+            Tile tile = tiles.get(i);
+            tile.analyze(tiles);
+        }
+        //
+        for (int j = 0; j < res * res; j++) {
+            grid.add(new cell(false, new Integer[]{ BLANK, UP, RIGHT, DOWN, LEFT}, tiles.size()));
+        }
+        //
 
-
-            for (int j = 0; j < res * res; j++) {
-                grid.add(new cell(false, new Integer[]{ BLANK, UP, RIGHT, DOWN, LEFT}));
-            }
 
         //grid.get(2).collapsed = true;
         //grid.get(2).options = new int[]{UP};
@@ -181,15 +200,18 @@ public class HelloApplication extends Application {
                 if (grid.get(index).collapsed){
                     nextGrid.add(grid.get(index));
                 }else {
-                    options = new ArrayList<>(Arrays.asList( BLANK, UP, RIGHT, DOWN, LEFT));
+                    options = new ArrayList<>();
+                    for (int k = 0; k < tiles.size(); k++) {
+                        options.add(k);
+                    }
                     //ArrayList<Integer> validOptions = new ArrayList<>();
                     //look up
                     if (j > 0){
                         cell up = grid.get(i + (j - 1) * res);
                         ArrayList<Integer> validOptions = new ArrayList<>();
                         for (int k = 0; k <up.options.length ; k++) {
-                            Integer[] valid = rules.get(up.options[k])[2];
-                            validOptions.addAll(List.of(valid));
+                            ArrayList<Integer> valid = tiles.get(up.options[k]).down;
+                            validOptions.addAll(valid);
                         }
                         checkValid(options, validOptions);
                     }
@@ -198,8 +220,8 @@ public class HelloApplication extends Application {
                         cell right = grid.get(i + 1 + j * res);
                         ArrayList<Integer> validOptions = new ArrayList<>();
                         for (int k = 0; k <right.options.length ; k++) {
-                            Integer[] valid = rules.get(right.options[k])[3];
-                            validOptions.addAll(List.of(valid));
+                            ArrayList<Integer> valid = tiles.get(right.options[k]).left;
+                            validOptions.addAll(valid);
                         }
                         checkValid(options, validOptions);
                     }
@@ -208,8 +230,8 @@ public class HelloApplication extends Application {
                         cell down = grid.get(i + (j + 1) * res);
                         ArrayList<Integer> validOptions = new ArrayList<>();
                         for (int k = 0; k <down.options.length ; k++) {
-                            Integer[] valid = rules.get(down.options[k])[0];
-                            validOptions.addAll(List.of(valid));
+                            ArrayList<Integer> valid = tiles.get(down.options[k]).up;
+                            validOptions.addAll(valid);
                         }
                         checkValid(options, validOptions);
                     }
@@ -218,8 +240,8 @@ public class HelloApplication extends Application {
                         cell left = grid.get(i - 1 + j * res);
                         ArrayList<Integer> validOptions = new ArrayList<>();
                         for (int k = 0; k <left.options.length ; k++) {
-                            Integer[] valid = rules.get(left.options[k])[1];
-                            validOptions.addAll(List.of(valid));
+                            ArrayList<Integer> valid = tiles.get(left.options[k]).right;
+                            validOptions.addAll(valid);
                         }
                         checkValid(options, validOptions);
                     }
@@ -249,7 +271,7 @@ public class HelloApplication extends Application {
                 cell cellToCheck = grid.get(i + j * res);
                 if (cellToCheck.collapsed) {
                     int index = cellToCheck.options[0];
-                    cellToCheck.setImage(index, i, j, group);
+                    cellToCheck.setImage(tiles.get(index).image.getImage(),tiles.get(index).rotation, i, j, group);
                 }
             }
         }

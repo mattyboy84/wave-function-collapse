@@ -1,6 +1,7 @@
 package com.example.wavefunctioncollapse;
 
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class cell {
@@ -27,19 +28,26 @@ public class cell {
     public ImageView tile;
     public int index;
     int posX, posY;
+    Integer[] options2;
 
-    public cell(boolean collapsed, Integer[] options/*, int posX, int posY*/) {
+    public cell(boolean collapsed, Integer[] options, int num/*, int posX, int posY*/) {
         this.index = 0;
         this.collapsed = collapsed;
         this.options = options;
         //this.posX = posX;
         //this.posY = posY;
+        options2 = new Integer[num];
+        for (int i = 0; i < num; i++) {
+            options2[i] = num;
+        }
+
     }
 
-    public void setImage(int index, int i, int j, Group group) {
+    public void setImage(Image image, int rotation, int i, int j, Group group) {
         System.out.println("set: I: " + posX + " J: " + posY + " To: " + index);
-        this.index = index;
-        this.tile = new ImageView(tiles[index].getImage());
+        //this.index = index;
+        this.tile = new ImageView(image);
+        this.tile.setRotate(90 * rotation);
         this.tile.relocate((i*tileWidth),(j*tileHeight));
         group.getChildren().add(this.tile);
     }
