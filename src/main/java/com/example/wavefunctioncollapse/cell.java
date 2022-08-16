@@ -26,21 +26,21 @@ public class cell {
     public Integer[] options;
     public ImageView tile;
     public int index;
-int posX, posY;
+    int posX, posY;
 
-    public cell(boolean collapsed, Integer[] options, int posX, int posY) {
+    public cell(boolean collapsed, Integer[] options/*, int posX, int posY*/) {
         this.index = 0;
         this.collapsed = collapsed;
         this.options = options;
-        this.posX=posX;
-        this.posY=posY;
+        //this.posX = posX;
+        //this.posY = posY;
     }
 
-    public void setImage(int index, Group group) {
+    public void setImage(int index, int i, int j, Group group) {
         System.out.println("set: I: " + posX + " J: " + posY + " To: " + index);
         this.index = index;
         this.tile = new ImageView(tiles[index].getImage());
-        this.tile.relocate((posX*tileWidth),(posY*tileHeight));
+        this.tile.relocate((i*tileWidth),(j*tileHeight));
         group.getChildren().add(this.tile);
     }
 

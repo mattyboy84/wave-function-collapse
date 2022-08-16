@@ -1,10 +1,13 @@
 package com.example.wavefunctioncollapse;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,7 +21,7 @@ public class HelloApplication extends Application {
     int tileHeight = 64;
 
     //public final int res = (HEIGHT / tileHeight);
-    public final int res = 5;
+    public final int res = 8;
 
     Group group = new Group();
     Scene scene = new Scene(group,WIDTH,HEIGHT);
@@ -40,7 +43,7 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        //
+        /*
         rules.put(0, new Integer[][]{
                 new Integer[]{UP},
                 new Integer[]{RIGHT},
@@ -71,13 +74,42 @@ public class HelloApplication extends Application {
                 new Integer[]{UP, RIGHT, LEFT},
                 new Integer[]{DOWN, RIGHT, UP}
         });
-        //
+        */
+        rules.put(0, new Integer[][]{
+                new Integer[]{BLANK, UP},
+                new Integer[]{BLANK, RIGHT},
+                new Integer[]{BLANK, DOWN},
+                new Integer[]{BLANK, LEFT}
+        });
+        rules.put(1, new Integer[][]{
+                new Integer[]{RIGHT, DOWN, LEFT},
+                new Integer[]{UP, DOWN, LEFT},
+                new Integer[]{BLANK, DOWN},
+                new Integer[]{UP, RIGHT, DOWN}
+        });
+        rules.put(2, new Integer[][]{
+                new Integer[]{RIGHT, DOWN, LEFT},
+                new Integer[]{UP, DOWN, LEFT},
+                new Integer[]{RIGHT, UP, LEFT},
+                new Integer[]{BLANK, LEFT}
+        });
+        rules.put(3, new Integer[][]{
+                new Integer[]{BLANK, UP},
+                new Integer[]{UP, LEFT, DOWN},
+                new Integer[]{UP, RIGHT, LEFT},
+                new Integer[]{UP, RIGHT, DOWN}
+        });
+        rules.put(4, new Integer[][]{
+                new Integer[]{RIGHT, DOWN, LEFT},
+                new Integer[]{BLANK, RIGHT},
+                new Integer[]{UP, RIGHT, LEFT},
+                new Integer[]{DOWN, RIGHT, UP}
+        });
 
-        for (int i = 0; i < res; i++) {
-            for (int j = 0; j < res; j++) {
-                grid.add(new cell(false, new Integer[]{ UP, RIGHT, DOWN, LEFT}, j, i));
+
+            for (int j = 0; j < res * res; j++) {
+                grid.add(new cell(false, new Integer[]{ BLANK, UP, RIGHT, DOWN, LEFT}));
             }
-        }
 
         //grid.get(2).collapsed = true;
         //grid.get(2).options = new int[]{UP};
@@ -102,6 +134,12 @@ public class HelloApplication extends Application {
 
         stage.setScene(scene);
         stage.show();
+        //
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
+            draw();
+        }));
+        timeline.setCycleCount(res * res);
+        timeline.play();
     }
 
     ArrayList<Integer> options;
@@ -115,7 +153,7 @@ public class HelloApplication extends Application {
             return o1.options.length < o2.options.length ? -1 : 1;
         });
         System.out.println("copied grid: " + copyGrid);
-        //if (copyGrid.size() == 0) return;
+        if (copyGrid.size() == 0) return;
 
         //get least options
         optionsGrid = new ArrayList<>(grid);
@@ -134,13 +172,13 @@ public class HelloApplication extends Application {
         collapseCheck();
         nextGrid = new ArrayList<>();
         ///*
-        for (int i = 0; i < res; i++) {
-            for (int j = 0; j < res; j++) {
+        for (int j = 0; j < res; j++) {
+            for (int i = 0; i < res; i++) {
                 int index = i + (j * res);
                 if (grid.get(index).collapsed){
                     nextGrid.add(grid.get(index));
                 }else {
-                    options = new ArrayList<>(Arrays.asList( UP, RIGHT, DOWN, LEFT));
+                    options = new ArrayList<>(Arrays.asList( BLANK, UP, RIGHT, DOWN, LEFT));
                     //ArrayList<Integer> validOptions = new ArrayList<>();
                     //look up
                     if (j > 0){
@@ -203,12 +241,12 @@ public class HelloApplication extends Application {
     }
 
     private void collapseCheck() {
-        for (int i = 0; i < res; i++) {
-            for (int j = 0; j < res; j++) {
+        for (int j = 0; j < res; j++) {
+            for (int i = 0; i < res; i++) {
                 cell cellToCheck = grid.get(i + j * res);
                 if (cellToCheck.collapsed) {
                     int index = cellToCheck.options[0];
-                    cellToCheck.setImage(index, group);
+                    cellToCheck.setImage(index, i, j, group);
                 }
             }
         }
