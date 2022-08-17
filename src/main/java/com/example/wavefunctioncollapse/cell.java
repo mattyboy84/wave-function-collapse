@@ -4,6 +4,8 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.Arrays;
+
 public class cell {
 
     final int BLANK = 0;
@@ -12,8 +14,8 @@ public class cell {
     final int DOWN = 3;
     final int LEFT = 4;
 
-    int tileWidth = 64;
-    int tileHeight = 64;
+    int tileWidth = HelloApplication.tileWidth;
+    int tileHeight = HelloApplication.tileHeight;
 
     ImageView[] tiles = {
             new ImageView("file:tiles/blank.png"),
@@ -30,15 +32,14 @@ public class cell {
     int posX, posY;
     Integer[] options2;
 
-    public cell(boolean collapsed, Integer[] options, int num/*, int posX, int posY*/) {
+    public cell(boolean collapsed, int num/*, int posX, int posY*/) {
         this.index = 0;
         this.collapsed = collapsed;
-        this.options = options;
         //this.posX = posX;
         //this.posY = posY;
-        options2 = new Integer[num];
+        this.options = new Integer[num];
         for (int i = 0; i < num; i++) {
-            options2[i] = num;
+            this.options[i] = i;
         }
 
     }

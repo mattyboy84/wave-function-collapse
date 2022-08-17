@@ -6,3 +6,6 @@
 # The small boxes are representing a blank tile
 ![](images/gettingSomewhere.png)
 ![](images/gettingSomewhere2.png)
+
+# tests with more complicated tile sheets after adding dynamic rules
+![](images/dynamicRulestest1.png)

@@ -18,23 +18,17 @@ public class HelloApplication extends Application {
     //int WIDTH = 512;
     //int HEIGHT = 512;
 
-    int tileWidth = 64;
-    int tileHeight = 64;
+    public static int tileWidth = 56;
+    public static int tileHeight = 56;
 
     //public final int res = (HEIGHT / tileHeight);
-    public final int res = 4;
+    public final int res = 16;
 
     int WIDTH = (tileWidth * res);
     int HEIGHT = (tileHeight * res);
 
     Group group = new Group();
     Scene scene = new Scene(group,WIDTH,HEIGHT);
-
-    final int BLANK = 0;
-    final int UP = 1;
-    final int RIGHT = 2;
-    final int DOWN = 3;
-    final int LEFT = 4;
 
     ArrayList<cell> grid = new ArrayList<>();
     ArrayList<cell> nextGrid = new ArrayList<>();
@@ -49,86 +43,58 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        /*
-        rules.put(0, new Integer[][]{
-                new Integer[]{UP},
-                new Integer[]{RIGHT},
-                new Integer[]{DOWN},
-                new Integer[]{LEFT}
-        });
-        rules.put(1, new Integer[][]{
-                new Integer[]{RIGHT, DOWN, LEFT},
-                new Integer[]{UP, DOWN, LEFT},
-                new Integer[]{ DOWN},
-                new Integer[]{UP, RIGHT, DOWN}
-        });
-        rules.put(2, new Integer[][]{
-                new Integer[]{RIGHT, DOWN, LEFT},
-                new Integer[]{UP, DOWN, LEFT},
-                new Integer[]{RIGHT, UP, LEFT},
-                new Integer[]{ LEFT}
-        });
-        rules.put(3, new Integer[][]{
-                new Integer[]{ UP},
-                new Integer[]{UP, LEFT, DOWN},
-                new Integer[]{UP, RIGHT, LEFT},
-                new Integer[]{UP, RIGHT, DOWN}
-        });
-        rules.put(4, new Integer[][]{
-                new Integer[]{RIGHT, DOWN, LEFT},
-                new Integer[]{ RIGHT},
-                new Integer[]{UP, RIGHT, LEFT},
-                new Integer[]{DOWN, RIGHT, UP}
-        });
-        */
-//        rules.put(0, new Integer[][]{
-//                new Integer[]{BLANK, UP},
-//                new Integer[]{BLANK, RIGHT},
-//                new Integer[]{BLANK, DOWN},
-//                new Integer[]{BLANK, LEFT}
-//        });
-//        rules.put(1, new Integer[][]{
-//                new Integer[]{RIGHT, DOWN, LEFT},
-//                new Integer[]{UP, DOWN, LEFT},
-//                new Integer[]{BLANK, DOWN},
-//                new Integer[]{UP, RIGHT, DOWN}
-//        });
-//        rules.put(2, new Integer[][]{
-//                new Integer[]{RIGHT, DOWN, LEFT},
-//                new Integer[]{UP, DOWN, LEFT},
-//                new Integer[]{RIGHT, UP, LEFT},
-//                new Integer[]{BLANK, LEFT}
-//        });
-//        rules.put(3, new Integer[][]{
-//                new Integer[]{BLANK, UP},
-//                new Integer[]{UP, LEFT, DOWN},
-//                new Integer[]{UP, RIGHT, LEFT},
-//                new Integer[]{UP, RIGHT, DOWN}
-//        });
-//        rules.put(4, new Integer[][]{
-//                new Integer[]{RIGHT, DOWN, LEFT},
-//                new Integer[]{BLANK, RIGHT},
-//                new Integer[]{UP, RIGHT, LEFT},
-//                new Integer[]{DOWN, RIGHT, UP}
-//        });
-        //
+
+        /* basic
         ImageView[] tileImages = {
-                new ImageView("file:tiles/blank.png"),
-                new ImageView("file:tiles/up.png"),
+                new ImageView("file:tiles/basic/blank.png"),
+                new ImageView("file:tiles/basic/up.png"),
         };
         tiles.add(new Tile(tileImages[0],new Integer[] {0, 0, 0, 0}, 0));
         tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 0));
         tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 1));
         tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 2));
         tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 3));
-        //
+        */
+
+        ImageView[] tileImages = {
+                new ImageView("file:tiles/circuit/0.png"),
+                new ImageView("file:tiles/circuit/1.png"),
+                new ImageView("file:tiles/circuit/2.png"),
+                new ImageView("file:tiles/circuit/3.png"),
+                //new ImageView("file:tiles/circuit/4.png"),
+                //new ImageView("file:tiles/circuit/5.png"),
+                new ImageView("file:tiles/circuit/6.png"),
+                new ImageView("file:tiles/circuit/7.png"),
+                new ImageView("file:tiles/circuit/8.png"),
+                new ImageView("file:tiles/circuit/9.png"),
+                new ImageView("file:tiles/circuit/10.png"),
+                new ImageView("file:tiles/circuit/11.png"),
+                new ImageView("file:tiles/circuit/12.png"),
+        };
+        tiles.add(new Tile(tileImages[0], new Integer[] {0, 0, 0, 0}, 0));
+        tiles.add(new Tile(tileImages[1], new Integer[] {1, 1, 1, 1}, 0));
+        tiles.add(new Tile(tileImages[2], new Integer[] {1, 2, 1, 1}, 0));
+        tiles.add(new Tile(tileImages[3], new Integer[] {1, 3, 1, 3}, 0));
+        tiles.add(new Tile(tileImages[4], new Integer[] {1, 2, 1, 2}, 0));
+        tiles.add(new Tile(tileImages[5], new Integer[] {3, 2, 3, 2}, 0));
+        tiles.add(new Tile(tileImages[6], new Integer[] {3, 1, 2, 1}, 0));
+        tiles.add(new Tile(tileImages[7], new Integer[] {2, 2, 1, 2}, 0));
+        tiles.add(new Tile(tileImages[8], new Integer[] {2, 2, 2, 2}, 0));
+        tiles.add(new Tile(tileImages[9], new Integer[] {2, 2, 1, 1}, 0));
+        tiles.add(new Tile(tileImages[10], new Integer[] {1, 2, 1, 2}, 0));
+
+        for (int i = 2; i < 11; i++) {
+            for (int j = 1; j < 4; j++) {
+                tiles.add(new Tile(tileImages[i], tiles.get(i).edges, j));
+            }
+        }
         for (int i = 0; i < tiles.size(); i++) {
             Tile tile = tiles.get(i);
             tile.analyze(tiles);
         }
         //
         for (int j = 0; j < res * res; j++) {
-            grid.add(new cell(false, new Integer[]{ BLANK, UP, RIGHT, DOWN, LEFT}, tiles.size()));
+            grid.add(new cell(false, tiles.size()));
         }
         //
 
