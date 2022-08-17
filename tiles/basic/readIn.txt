@@ -1,0 +1,9 @@
+ImageView[] tileImages = {
+        new ImageView("file:tiles/basic/blank.png"),
+        new ImageView("file:tiles/basic/up.png"),
+};
+tiles.add(new Tile(tileImages[0],new Integer[] {0, 0, 0, 0}, 0));
+tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 0));
+tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 1));
+tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 2));
+tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 3));

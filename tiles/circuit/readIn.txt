@@ -1,0 +1,18 @@
+        ArrayList<ImageView> tileImages = new ArrayList<>();
+        for (int i = 0; i < 13; i++) {
+            tileImages.add(new ImageView("file:tiles/circuit/" + i + ".png"));
+        }
+
+        tiles.add(new Tile(tileImages.get(0), new String[] {"AAA", "AAA", "AAA", "AAA"}, 0));
+        tiles.add(new Tile(tileImages.get(1), new String[] {"BBB", "BBB", "BBB", "BBB"}, 0));
+        tiles.add(new Tile(tileImages.get(2), new String[] {"BBB", "BCB", "BBB", "BBB"}, 0));
+        tiles.add(new Tile(tileImages.get(3), new String[] {"BBB", "BDB", "BBB", "BDB"}, 0));
+        tiles.add(new Tile(tileImages.get(4), new String[] {"ABB", "BCB", "BBA", "AAA"}, 0));
+        tiles.add(new Tile(tileImages.get(5), new String[] {"ABB", "BBB", "BBB", "BBA"}, 0));
+        tiles.add(new Tile(tileImages.get(6), new String[] {"BBB", "BCB", "BBB", "BCB"}, 0));
+        tiles.add(new Tile(tileImages.get(7), new String[] {"BDB", "BCB", "BDB", "BCB"}, 0));
+        tiles.add(new Tile(tileImages.get(8), new String[] {"BDB", "BBB", "BCB", "BBB"}, 0));
+        tiles.add(new Tile(tileImages.get(9), new String[] {"BCB", "BCB", "BBB", "BCB"}, 0));
+        tiles.add(new Tile(tileImages.get(10), new String[]{"BCB", "BCB", "BCB", "BCB"}, 0));
+        tiles.add(new Tile(tileImages.get(11), new String[]{"BCB", "BCB", "BBB", "BBB"}, 0));
+        tiles.add(new Tile(tileImages.get(12), new String[]{"BBB", "BCB", "BBB", "BCB"}, 0));

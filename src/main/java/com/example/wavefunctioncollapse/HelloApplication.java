@@ -44,48 +44,28 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) {
 
-        /* basic
-        ImageView[] tileImages = {
-                new ImageView("file:tiles/basic/blank.png"),
-                new ImageView("file:tiles/basic/up.png"),
-        };
-        tiles.add(new Tile(tileImages[0],new Integer[] {0, 0, 0, 0}, 0));
-        tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 0));
-        tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 1));
-        tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 2));
-        tiles.add(new Tile(tileImages[1],new Integer[] {1, 1, 0, 1}, 3));
-        */
+        ArrayList<ImageView> tileImages = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            tileImages.add(new ImageView("file:tiles/dungeon/" + i + ".png"));
+        }
 
-        ImageView[] tileImages = {
-                new ImageView("file:tiles/circuit/0.png"),
-                new ImageView("file:tiles/circuit/1.png"),
-                new ImageView("file:tiles/circuit/2.png"),
-                new ImageView("file:tiles/circuit/3.png"),
-                //new ImageView("file:tiles/circuit/4.png"),
-                //new ImageView("file:tiles/circuit/5.png"),
-                new ImageView("file:tiles/circuit/6.png"),
-                new ImageView("file:tiles/circuit/7.png"),
-                new ImageView("file:tiles/circuit/8.png"),
-                new ImageView("file:tiles/circuit/9.png"),
-                new ImageView("file:tiles/circuit/10.png"),
-                new ImageView("file:tiles/circuit/11.png"),
-                new ImageView("file:tiles/circuit/12.png"),
-        };
-        tiles.add(new Tile(tileImages[0], new Integer[] {0, 0, 0, 0}, 0));
-        tiles.add(new Tile(tileImages[1], new Integer[] {1, 1, 1, 1}, 0));
-        tiles.add(new Tile(tileImages[2], new Integer[] {1, 2, 1, 1}, 0));
-        tiles.add(new Tile(tileImages[3], new Integer[] {1, 3, 1, 3}, 0));
-        tiles.add(new Tile(tileImages[4], new Integer[] {1, 2, 1, 2}, 0));
-        tiles.add(new Tile(tileImages[5], new Integer[] {3, 2, 3, 2}, 0));
-        tiles.add(new Tile(tileImages[6], new Integer[] {3, 1, 2, 1}, 0));
-        tiles.add(new Tile(tileImages[7], new Integer[] {2, 2, 1, 2}, 0));
-        tiles.add(new Tile(tileImages[8], new Integer[] {2, 2, 2, 2}, 0));
-        tiles.add(new Tile(tileImages[9], new Integer[] {2, 2, 1, 1}, 0));
-        tiles.add(new Tile(tileImages[10], new Integer[] {1, 2, 1, 2}, 0));
+        tiles.add(new Tile(tileImages.get(0), new String[] {"ABA", "ABA", "ABA", "ABA"}, 0));
+        tiles.add(new Tile(tileImages.get(1), new String[] {"AAA", "ABA", "ABA", "ABA"}, 0));
+        tiles.add(new Tile(tileImages.get(2), new String[] {"AAA", "AAA", "ABA", "ABA"}, 0));
+        tiles.add(new Tile(tileImages.get(3), new String[] {"AAA", "AAA", "AAA", "ABA"}, 0));
+        tiles.add(new Tile(tileImages.get(4), new String[] {"AAA", "ABA", "AAA", "ABA"}, 0));
+        //
+        tiles.add(new Tile(tileImages.get(5), new String[] {"AAA", "ACA", "AAA", "ABA"}, 0));
+        tiles.add(new Tile(tileImages.get(6), new String[] {"ABA", "ACA", "AAA", "ABA"}, 0));
+        tiles.add(new Tile(tileImages.get(7), new String[] {"ABA", "ACA", "ABA", "ABA"}, 0));
+        //
+        tiles.add(new Tile(tileImages.get(8), new String[] {"AAA", "ADD", "DDA", "ABA"}, 0));
+        tiles.add(new Tile(tileImages.get(9), new String[] {"ABA", "ADD", "DDA", "ABA"}, 0));
 
-        for (int i = 2; i < 11; i++) {
+
+        for (int i = 0; i < tileImages.size(); i++) {
             for (int j = 1; j < 4; j++) {
-                tiles.add(new Tile(tileImages[i], tiles.get(i).edges, j));
+                tiles.add(new Tile(tileImages.get(i), tiles.get(i).edges, j));
             }
         }
         for (int i = 0; i < tiles.size(); i++) {
@@ -98,22 +78,6 @@ public class HelloApplication extends Application {
         }
         //
 
-
-        //grid.get(2).collapsed = true;
-        //grid.get(2).options = new int[]{UP};
-        //grid.get(1).collapsed = true;
-        //grid.get(1).options = new int[]{LEFT};
-        //System.out.println(grid);
-        //
-        //sort
-        //draw();
-        //for (int i = 0; i < res; i++) {
-        //    for (int j = 0; j < res; j++) {
-        //        int index = i + j * res;
-        //        grid.get(index).updateOptions();
-        //    }
-        //}
-
         scene.setOnMouseClicked(mouseEvent -> {
             if (mouseEvent.getButton() == MouseButton.PRIMARY) {
                 draw();
@@ -123,7 +87,7 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
         //
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(100), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(50), event -> {
             draw();
         }));
         timeline.setCycleCount(res * res);
