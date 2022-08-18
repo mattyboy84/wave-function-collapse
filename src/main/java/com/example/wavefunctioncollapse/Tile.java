@@ -26,7 +26,6 @@ public class Tile {
 
     private Boolean compareEdge(String edge1, String edge2){
         return edge1.equals(new StringBuilder(edge2).reverse().toString());
-
     }
 
     //creates the adjacency rules
